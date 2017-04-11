@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{margin:0;padding:0}
+a{ text-decoration:none;}
+.wrap{ background:url(merry.jpg);  width:1024px; height:960px; margin:0 300px;}
+
+#calendar{width:280px; padding:20px; position:absolute; left:75%; top:43%; text-align:center;}
+#title{ text-align:center; margin-bottom:10px; font-size:30px; color:#3c6044;}
+#calendar select{ height:30px; width:70px; margin:10px; font-size:16px;}
+#calendar .week{height:40px; line-height:30px;border-bottom:1px dashed #6b300e; margin-bottom:10px;}
+#calendar .week li{ float:left;width:40px;height:40px; text-align:center; list-style:none; font-size:20px; color:#6b300e;}
+#calendar .dateUl{ overflow:hidden; clear:both}
+#calendar .dateUl li{float:left;width:40px;height:40px; text-align:center; line-height:40px;list-style:none; cursor:pointer; font-size:20px;color:#6b300e;}
+#calendar .dateUl li:hover{ color:#cf1a13;}
+#calendar .dateUl .ccc{ color:#ccc;}
+#calendar .dateUl .today{ background:#F90; color:#fff;}
+#calendar .dateUl .sun{ color:#cf1a13;}
+
+</style>
+<script>
+window.onload=function(){
+	var sel=document.getElementsByTagName("select");
+    var calendar=document.getElementById('calendar');
+    var day_list=document.getElementById('date_list');
+	
+	function run(){
+		var iyear=parseInt(sel[0].value);
+		var imonth=parseInt(sel[1].value);
+		day_list.innerHTML="";
+	    var oDate=new Date();
+		var nowyear=oDate.getFullYear();
+		var nowmonth=oDate.getMonth();
+		var nowtoday=oDate.getDate();
+	    oDate.setFullYear(iyear)
+	    oDate.setMonth(imonth)
+	   var year=oDate.getFullYear();
+	   var month=oDate.getMonth();
+	   var today=oDate.getDate();
+	   
+	   oDate.setMonth(month+1,0);
+	   var allDays=oDate.getDate();
+	   oDate.setDate(1);
+	   var firstweek=oDate.getDay();
+	   if(firstweek==0){firstweek=7;};
+	  //插入空白
+		for(var j=1;j<firstweek;j++){
+			var oLi=document.createElement("li");
+			day_list.appendChild(oLi);	
+			oLi.disabled=true;
+		};
+	   //插入本月天数
+		for(var i=0; i<allDays; i++){
+			var oLi=document.createElement('li');
+			oLi.innerHTML=i+1; 
+			day_list.appendChild(oLi) ;
+		};
+		
+		var aLi=day_list.children;
+		for(var k=0; k<aLi.length; k++){
+			if(k%7==5 || k%7==6){
+				aLi[k].className="sun";
+			};
+			if(aLi[k].innerHTML==today){
+					aLi[k].className="today"
+			}
+			if(iyear==nowyear&&imonth==nowmonth){
+				if(aLi[k].innerHTML<today){
+					aLi[k].className="ccc"
+				};
+			}else if(iyear<nowyear){
+				for(var k=0; k<aLi.length; k++){
+					aLi[k].className="ccc"	
+				};
+			}else if(iyear==nowyear&&imonth<nowmonth){
+				for(var k=0; k<aLi.length; k++){
+					aLi[k].className="ccc"	
+				};
+			};
+		};
+		document.getElementById('title').innerHTML=iyear+"年"+(imonth+1)+"月"+today+"日"; 
+	};
+	run();
+	sel[0].onchange=function(){
+		run();
+	};
+	sel[1].onchange=function(){
+		run();	
+	};
+};
+</script>
+</head>
+
+<body>
+<div class="wrap">
+<div id="calendar">
+       <h2 id="title">2016年12月</h2>
+<form>
+<select>
+<option value="2015">2015</option>
+<option value="2016" selected="selected">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>年
+<select>
+<option value="0">01</option>
+<option value="1">02</option>
+<option value="2">03</option>
+<option value="3">04</option>
+<option value="4">05</option>
+<option value="5">06</option>
+<option value="6">07</option>
+<option value="7">08</option>
+<option value="8">09</option>
+<option value="9">10</option>
+<option value="10">11</option>
+<option value="11" selected="selected">12</option>
+</select>月
+    <ul class="week">
+    	<li>一</li>
+    	<li>二</li>
+    	<li>三</li>
+    	<li>四</li>
+    	<li>五</li>
+    	<li>六</li>
+    	<li>日</li>
+    </ul>
+    <ul id="date_list" class="dateUl"></ul>
+</div>
+</div>
+</body>
+</html>
